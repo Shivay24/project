@@ -3,162 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tournament Finder</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .card {
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
     <script>
-        var module=angular.module("kuchModule",[]);
-        var controller=module.controller("kuchController",function($scope,$http)
-    {
-        $scope.doFetchAll=function()
-        {
-          
-            let url="/fetch-all-users";
-            $http.get(url).then(done,fail);
-            function done(response)
-            {
-                // alert(JSON.stringify(response.data));
-                $scope.jsonArray=response.data;
-            }
-            function fail(err)
-            {
-                alert(err.data);
-            }
-        }
-        $scope.showSelCities=function()
-        {
-            let url="/fetch-cities";
-            $http.get(url).then(done,fail);
-            function done(response)
-            {
-                // alert(JSON.stringify(response.data));
-                $scope.jsonArray=response.data;
-
-            }
-            function fail(err)
-            {
-                alert(err.data)
-            }
-        }
-        $scope.showSelGames=function()
-        {
-            let url="/fetch-games";
-            $http.get(url).then(done,fail);
-            function done(response)
-            {
-                // alert(JSON.stringify(response.data));
-                $scope.jsonArray=response.data;
-            }
-            function fail(err)
-            {
-                alert(err.data)
-            }
-        }
-        $scope.doFetchOne=function(index)
-        {
-            $scope.selObj=$scope.jsonArray[index];
-        }
-        $scope.showselrecords=function()
-        {
-          let url="/fetch-records";
-          $http.get(url).then(done,fail);
-          function done(response)
-          {
-            $scope.jsonArray=response.data;
-
-          }
-          function fail(err)
-          {
-            alert(err.data)
-          }
-        }
-    });
+        var app = angular.module("tournamentApp", []);
+        app.controller("tournamentController", function($scope, $http) {
+            $scope.doFetchAll = function() {
+                let url = "/fetch-all-users";
+                $http.get(url).then(response => $scope.jsonArray = response.data, err => alert(err.data));
+            };
+            $scope.showSelCities = function() {
+                let url = "/fetch-cities";
+                $http.get(url).then(response => $scope.cityArray = response.data, err => alert(err.data));
+            };
+            $scope.showSelGames = function() {
+                let url = "/fetch-games";
+                $http.get(url).then(response => $scope.gameArray = response.data, err => alert(err.data));
+            };
+            $scope.showselrecords = function() {
+                let url = "/fetch-records";
+                $http.get(url).then(response => $scope.jsonArray = response.data, err => alert(err.data));
+            };
+            $scope.doFetchOne = function(index) {
+                $scope.selObj = $scope.jsonArray[index];
+            };
+        });
     </script>
 </head>
-<body ng-app="kuchModule" ng-controller="kuchController" ng-init="showSelCities(); showSelGames();">
-    <center>
-      <h2>TOURNAMENT FINDER</h2> <br><br>
-      <!-- <button type="button" class="btn btn-primary" ng-click="showSelCities();">Cities</button> -->
-        <select >
-            <option value="none">select</option>
-            <option ng-repeat="boxObj in jsonArray" value="{{boxObj.city}}">{{boxObj.city}}</option>
-        </select>
-        <!-- <button type="button" class="btn btn-primary" ng-click="showSelGames();">Games</button> -->
-        <select >
-            <option value="none">Select</option>
-            <option ng-repeat="boxObj in jsonArray" value="{{boxObj.game}}">{{boxObj.game}}</option>
-        </select>
-        <br><br>
-        <button type="button" class="btn btn-primary" ng-click="showselrecords();">Show selected Records</button>
-    <h1>CARDS</h1>
-    <hr>
-    <button type="button" class="btn btn-primary" ng-click="doFetchAll();">Show all Records</button>
-    <hr>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3" ng-repeat="boxObj in jsonArray">
-                <div class="card">
-                    <center><img src="{{boxObj.poster}}" width="100" height="100" alt="" ></center>       
+<body ng-app="tournamentApp" ng-controller="tournamentController" ng-init="showSelCities(); showSelGames();">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">TOURNAMENT FINDER</h2>
+        <div class="d-flex justify-content-center gap-3">
+            <select class="form-select w-25" ng-model="selectedCity">
+                <option value="">Select City</option>
+                <option ng-repeat="city in cityArray" value="{{city.city}}">{{city.city}}</option>
+            </select>
+            <select class="form-select w-25" ng-model="selectedGame">
+                <option value="">Select Game</option>
+                <option ng-repeat="game in gameArray" value="{{game.game}}">{{game.game}}</option>
+            </select>
+            <button class="btn btn-primary" ng-click="showselrecords();">Show Selected Records</button>
+        </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-dark" ng-click="doFetchAll();">Show All Records</button>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-4" ng-repeat="boxObj in jsonArray">
+                <div class="card shadow-sm">
+                    <img src="{{boxObj.poster}}" class="card-img-top" style="height: 200px; object-fit: cover;">
                     <div class="card-body">
-                      <h5 class="card-title">Game:{{boxObj.game}}</h5>
-                      <h5 class="card-title">Fee:{{boxObj.fee}}</h5>
-                      <h5 class="card-title">city:{{boxObj.city}}</h5>
-                      <h5 class="card-title">Location:{{boxObj.location}}</h5>
-                      <h5 class="card-title">Prize:{{boxObj.prizes}}</h5>
-                      <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal1" ng-click="doFetchOne($index);">Click Here</a>
+                        <h5 class="card-title">{{boxObj.game}}</h5>
+                        <p class="card-text"><strong>Fee:</strong> {{boxObj.fee}}</p>
+                        <p class="card-text"><strong>City:</strong> {{boxObj.city}}</p>
+                        <p class="card-text"><strong>Location:</strong> {{boxObj.location}}</p>
+                        <p class="card-text"><strong>Prize:</strong> {{boxObj.prizes}}</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal1" ng-click="doFetchOne($index);">Details</button>
                     </div>
-                  </div>
+                </div>
             </div>
         </div>
     </div>
-</center>
-<div class="modal" id="modal1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+    <div class="modal" id="modal1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tournament Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="{{selObj.poster}}" width="150" height="150" class="mb-3">
+                    <p><strong>Tournament ID:</strong> {{selObj.tid}}</p>
+                    <p><strong>Email:</strong> {{selObj.emailid}}</p>
+                    <p><strong>Game:</strong> {{selObj.game}}</p>
+                    <p><strong>Title:</strong> {{selObj.title}}</p>
+                    <p><strong>Fee:</strong> {{selObj.fee}}</p>
+                    <p><strong>City:</strong> {{selObj.city}}</p>
+                    <p><strong>Location:</strong> {{selObj.location}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <p>
-                <img src="{{selObj.poster}}" width="100" height="100" alt="">
-            </p>
-          <p>
-            {{selObj.tid}}
-          </p>
-          <p>
-            {{selObj.emailid}}
-          </p>
-          <p>
-            {{selObj.game}}
-          </p>
-          <p>
-            {{selObj.title}}
-          </p>
-          
-          <p>
-            {{selObj.fee}}
-          </p>
-          <p>
-            {{selObj.city}}
-          </p>
-          <p>
-            {{selObj.location}}
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
     </div>
-  </div>
-    
 </body>
 </html>
-
-
-  </div>
-</div>

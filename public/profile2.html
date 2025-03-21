@@ -1,158 +1,140 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>profileOrganizer</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>Organizer Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<style>
-  body{
-    background-color: aliceblue;
-    color: black;
-  }
-</style>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .btn-custom {
+            width: 100%;
+            font-weight: bold;
+        }
+    </style>
 
     <script>
-      
-
-
-
-$(document).ready(function() {
-    $("#txtemail").val(localStorage.getItem("activeUser")).attr("readonly", true);
-    $("#btnFetch").click(function() {
-        let email = $("#txtemail").val();
-        let obj = {
-            type: "get",
-            url: "/fetch-user",
-            data: {
-                email: email
-            }
-        };
-        $.ajax(obj).done(function(responseAry) {
-            if (responseAry.length == 0) {
-                alert("Invalid Id");
-                return;
-            } else {
-                alert(JSON.stringify(responseAry));
-                $("#txtorg").val(responseAry[0].organisation);
-                $("#txtcontact").val(responseAry[0].contact);
-                $("#txtaddress").val(responseAry[0].address);
-                $("#txtcity").val(responseAry[0].city);
-                $("#txtproof").val(responseAry[0].proof);
-                $("#txtprooffile").prop("src", responseAry[0].prooffile);
-                $("#txtsports").val(responseAry[0].sport);
-                $("#txtprev").val(responseAry[0].hosted);
-                $("#txtwebsite").val(responseAry[0].website);
-            }
-        }).fail(function(err) {
-            alert(err);
+        $(document).ready(function() {
+            $("#txtemail").val(localStorage.getItem("activeUser")).attr("readonly", true);
+            $("#btnFetch").click(function() {
+                let email = $("#txtemail").val();
+                let obj = {
+                    type: "get",
+                    url: "/fetch-user",
+                    data: { email: email }
+                };
+                $.ajax(obj).done(function(responseAry) {
+                    if (responseAry.length == 0) {
+                        alert("Invalid ID");
+                        return;
+                    } else {
+                        $("#txtorg").val(responseAry[0].organisation);
+                        $("#txtcontact").val(responseAry[0].contact);
+                        $("#txtaddress").val(responseAry[0].address);
+                        $("#txtcity").val(responseAry[0].city);
+                        $("#txtproof").val(responseAry[0].proof);
+                        $("#prev").attr("src", responseAry[0].prooffile);
+                        $("#txtsports").val(responseAry[0].sport);
+                        $("#txtprev").val(responseAry[0].hosted);
+                        $("#txtwebsite").val(responseAry[0].website);
+                    }
+                }).fail(function(err) {
+                    alert("Error: " + err.responseText);
+                });
+            });
         });
-    });
-});
-
-   </script>
-  </head>
-
+    </script>
+</head>
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <div class="container mt-4">
-        <div class="row mb-4">
-            <center>ORGANIZER'S PROFILE</center>
-        </div>
-    <form class="row g-3" enctype="multipart/form-data" method="post">
-        <div class="row">
-        <div class="col-md-12">
-          <label for="inputEmail4" class="form-label">Email</label>
-        </div>
-        </div>
-        <div class="row">
-        <div class="col-md-10">
-          <input type="text" class="form-control" id="txtemail" name="txtemail">
-        </div>
-        <div class="col-md-2">
-          <button type="button" class="btn btn-outline-secondary" type="button" id="Fetch"  formaction="/fetch-user">Search</button>
-        </div>
-     
-       <div class="row mt-4">
-        <div class="col-6">
-          <label for="inputAddress" class="form-label">Organization</label>
-          <input type="text" class="form-control" id="txtorg" name="txtorg" >
-        </div>
-        <div class="col-6">
-            <label for="inputAddress" class="form-label">Contact No.(Of Any Representative)</label>
-            <input type="text" class="form-control" id="txtcontact" name="txtcontact">
-          </div>
-          
+    <div class="container">
+        <h2>Organizer's Profile</h2>
+        <form class="row g-3" enctype="multipart/form-data" method="post">
+            <div class="col-md-10">
+                <label>Email</label>
+                <input type="text" class="form-control" id="txtemail" readonly>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-secondary btn-custom" id="btnFetch">Search</button>
+            </div>
+            <div class="col-md-6">
+                <label>Organization</label>
+                <input type="text" class="form-control" id="txtorg">
+            </div>
+            <div class="col-md-6">
+                <label>Contact No. (Representative)</label>
+                <input type="text" class="form-control" id="txtcontact">
+            </div>
+            <div class="col-md-6">
+                <label>Address</label>
+                <input type="text" class="form-control" id="txtaddress">
+            </div>
+            <div class="col-md-6">
+                <label>City</label>
+                <input type="text" class="form-control" id="txtcity">
+            </div>
+            <div class="col-md-6">
+                <label>Id Proof</label>
+                <select class="form-select" id="txtproof">
+                    <option selected disabled>Select</option>
+                    <option>Registration Certificate</option>
+                    <option>Aadhaar Card</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label>Upload File</label>
+                <input type="file" class="form-control" id="txtprooffile" onchange="preview();">
+            </div>
+            <div class="col-md-3">
+                <img src="" id="prev" alt="Preview" class="img-thumbnail" width="100" height="120">
+            </div>
+            <div class="col-md-6">
+                <label>Deals with Sports</label>
+                <select multiple class="form-select" id="txtsports">
+                    <option disabled>Select</option>
+                    <option>Cricket</option>
+                    <option>Football</option>
+                    <option>Hockey</option>
+                    <option>Skating</option>
+                    <option>Others</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label>Previous Tournaments Hosted</label>
+                <textarea class="form-control" id="txtprev"></textarea>
+            </div>
+            <div class="col-md-6">
+                <label>Reference Website</label>
+                <input type="text" class="form-control" id="txtwebsite">
+            </div>
+            <div class="col-md-6">
+                <label>Social Media Handle</label>
+                <input type="text" class="form-control" id="txtinsta">
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-success btn-custom" formaction="/save">Save</button>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary btn-custom" formaction="/update">Update</button>
+            </div>
+        </form>
     </div>
-    <div class="row mt-4">
-        <div class="col-6">
-          <label for="inputAddress2" class="form-label">Address </label>
-          <input type="text" class="form-control" id="txtaddress" name="txtaddress" >
-        </div>
-        <div class="col-md-6">
-          <label for="inputCity" class="form-label">City</label>
-          <input type="text" class="form-control" id="txtcity" name="txtcity">
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-6">
-          <label for="inputState" class="form-label">Id Proof</label>
-          <select id="inputState" class="form-select" id="txtproof" name="txtproof">
-            <option selected disabled>Select</option>
-            <option>Registration Certificate</option>
-            <option>Aadhaar Card</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label for="inputZip" class="form-label">Upload File</label>
-          <input type="file" name="txtprooffile" id="txtprooffile" onchange="preview();">
-        </div>
-        <div class="col-md-3">
-            
-            <img src="" id="prev" alt="" width="100" height="120">
-          </div>
-          </div>
-     <div class="row mt-4">
-        <div class="col-6">
-          <div class="form-check">
-            Deals with Sports :<br>
-                       <select  multiple size="4" id="txtsports" name="txtsports">
-                          <option value="none" disabled>Select</option>
-                          <option value="Cricket">Cricket</option>
-                          <option value="Football">Football</option>
-                          <option value="Hockey">Hockey</option>
-                          <option value="Skating">Skating</option>
-                          <option value="Others">Others</option>
-                          
-                       </select>
-          </div>
-        </div>
-        <div class="col-6">Previous Tournaments Hosted<br>
-          <textarea id="txtprev" name="txtprev"></textarea>
-        </div>
-     </div>
-     <div class="row mt-4">
-        <div class="col-6">
-            <label for="inputAddress" class="form-label">Reference Website(If any)</label>
-          <input type="text" class="form-control" id="txtwebsite" name="txtwebsite" >
-        </div>
-        <div class="col-6">
-            <label for="inputAddress" class="form-label">Any Social Media Handle</label>
-          <input type="text" class="form-control" id="txtinsta"  name="txtinsta">
-        </div>
-     </div>
-     <div class="row mt-4">
-        <div class="col-6">
-        <button type="submit" class="btn btn-outline-success" formaction="/save">Save</button>
-        </div>
-        <div class="col-6">
-        <button type="submit" class="btn btn-outline-success" formaction="/update">Update</button>
-        </div>
-     </div>
-      </form>
-    </div>
-      
-    </body>
-  </html>
+</body>
+</html>

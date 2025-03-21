@@ -1,5 +1,6 @@
 var express=require("express");
 var app=express();
+var nodemailer=require('nodemailer');
 var fileuploader=require("express-fileupload");
 app.use(fileuploader());
 var mysql2=require("mysql2");
@@ -87,6 +88,7 @@ app.get("/arsh",function(req,resp){
     let arni=__dirname+"/public/profile3.html";
     resp.sendFile(arni);
 })
+app.express
 
     app.use(express.urlencoded(true)); 
 app.post("/save", async function(req,resp){
@@ -315,3 +317,25 @@ app.get("/update-Password",function(req,resp){
         }
     });
 });
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'anshugarg964@gmail.com',
+      pass: 'ANSHU_Shivay24'
+    }
+  });
+  
+  var mailOptions = {
+    from: 'anshugarg964@gmail.com',
+    to: 'myfriend@yahoo.com',
+    subject: 'Sending Email using Node.js',
+    text: 'That was easy!'
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });

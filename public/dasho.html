@@ -1,134 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About Us</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-    <script
-      src="https://kit.fontawesome.com/eb3817f40d.js"
-      crossorigin="anonymous"
-    ></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <script src="https://kit.fontawesome.com/eb3817f40d.js" crossorigin="anonymous"></script>
+    
     <style>
-      .card-body{
-        background-color: gray;
-      }
-    </style>
-    <script>
-      $(document).ready(function(){
-            $("#activeUser").html(localStorage.getItem("activeUser"));
-            $("#update").click(function(){
-                let email=$("#email").val();
-                let CurrPwd=$("#CurrPwd").val();
-                let NewPwd=$("#NewPwd").val();
-                let obj={
-                    url:"/update-Password",
-                    type:"get",
-                    data:{
-                        email:email,
-                        CurrPwd:CurrPwd,
-                        NewPwd:NewPwd
-                    }
-                }
-                $.ajax(obj).done(function(resp){
-                    alert(resp);
-                }).fail(function(resp){
-                    alert(resp);
-                })
-            })
-        $("#BtnLogout").click(function(){
-                localStorage.removeItem("activeUser");
-                location.href="index.html";
-              });
-             
-            
-             $("#btnpost").click(function(){
-              location.href="profile3.html";
-             })
-             $("#btnprofile").click(function(){
-              location.href="profile2.html";
-      })
-      $("#settings").click(function(){
-        
-      })
-    }); 
-                
-      
-    </script>
-   
-  </head>
-  <body>
-    <h2>ORGANIZER DASHBOARD</h2>
-    <div class="container">
-    <div class="row row-cols-1 row-cols-md-4 g-4">
-      <div class="col">
-        <div class="card">
-          <img src="pics/profile.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <button type="button" class="btn btn-outline-dark" id="btnprofile" name="btnprofile">My Profile</button>
-            </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="pics/settings.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <center>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">settings</button>
-            </center>
-            </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="pics/tourn.png" class="card-img-top" alt="...">
-          <div class="card-body">
-            <button type="button" class="btn btn-outline-dark" id="btnpost" name="btnpost">Post Tournament</button>
-           </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="pics/download.png" class="card-img-top" alt="...">
-          <div class="card-body">
-            <button type="submit" class="btn btn-outline-dark" id="BtnLogout" name="BtnLogout">Logout</button>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Settings</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="col-md-12">
-                <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email">
-            </div>
-            <div class="col-md-12">
-                <label for="inputEmail4" class="form-label">Current Password</label>
-                <input type="password" class="form-control" id="CurrPwd">
-            </div>
-            <div class="col-md-12">
-                <label for="inputEmail4" class="form-label">New Password</label>
-                <input type="password" class="form-control" id="NewPwd">
-            </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="update">Update</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  </body>
-</html>
+        body {
+            background-color: #f8f9fa;
+        }
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card {
+            border-radius: 12px;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            background: linear-gradient(135deg, #007bff, #6610f2);
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .btn-custom {
+            background-color: white;
+            color: #333;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .btn-custom:hover {
+            background-color: #ddd;
+            color: #000;
+        }
+    </style>
+
+</head>
+<body>
+
+    <h2>Organizer Dashboard</h2>
+
+    <div class="container mt-4">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            
+            <!-- My Profile -->
+            <div class="col">
+                <div class="card">
+                    <img src="pics/profile.jpg" class="card-img-top" alt="Profile">
+                    <div class="card-body">
+                        <button class="btn btn-custom" id="btnProfile">My Profile</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="col">
+                <div class="card">
+                    <img src="pics/settings.jpg" class="card-img-top" alt="Settings">
+                    <div class="card-body">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#settingsModal">Settings</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post Tournament -->
+            <div class="col">
+                <div class="card">
+                    <img src="pics/tourn.png" class="card-img-top" alt="Tournament">
+                    <div class="card-body">
+                        <button class="btn btn-custom" id="btnPost">Post Tournament</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logout -->
+            <div class="col">
+                <div class="card">
+                    <img src="pics/download.png" class="card-img-top" alt="Logout">
+                    <div class="card-body">
+                        <button class="btn btn-danger" id="btnLogout">Logout</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label>Email</label>
+                    <input type="email" class="form-control mb-2" id="email">
+
+                    <label>Current Password</label>
+                    <input type="password" class="form-control mb-2" id="currPwd">
+
+                    <label>New Password</label>
+                    <input type="password" class="form-control mb-2" id="newPwd">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="updateSettings">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            console.log("Organizer Dashboard Loaded!");
+
+            // My Profile Button
+            $("#btnProfile").click(function () {
+                console.log("Navigating to Profile...");
+                window.location.href = "profile2.html";
+            });
+
+            // Post Tournament Button
+            $("#btnPost").click(function () {
+                console.log("Navigating to Post Tournament...");
+                window.location.href = "profile3.html";
+            });
+
+            // Logout Button
+            $("#btnLogout").click(function () {
+                console.log("Logging out...");
+                localStorage.removeItem("activeUser");
+                window.location.href = "index.html";
+            });
+
+            // Update Settings Button
+            $("#updateSettings").click(function () {
+                let email = $("#email").val();
+                let currPwd = $("#currPwd").val();
+                let newPwd = $("#newPwd").val();
+
+                if (!email || !currPwd || !newPwd) {
+                    alert("All fields are required!");
+                    return;
+                }
+
+                let obj = {
+                    url: "/update-Password",
+                    type: "GET",
+                    data: { email: email, currPwd: currPwd, newPwd: newPwd }
+                };
+
+                $.ajax(obj)
+                    .done(function (resp) {
+                        alert("Password Updated Successfully!");
+                    })
+                    .fail(function (err) {
+                        alert("Error: " + err.responseText);
+                    });
+            });
+        });
+    </script>
+
+</body>
+</html>
